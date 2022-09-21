@@ -1,9 +1,13 @@
 package com.example.a3_2_edureka
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapter(private val newArrayList:ArrayList<DataItem>):
@@ -19,7 +23,8 @@ class MyAdapter(private val newArrayList:ArrayList<DataItem>):
 
     class MyViewHolder(itemView: View, listener: onItemCLickListener):RecyclerView.ViewHolder(itemView){
 
-        val button: Button = itemView.findViewById(R.id.btnListView)
+        val button: TextView = itemView.findViewById(R.id.tvButton)
+//        val card:CardView = itemView.findViewById(R.id.cvCardItem)
         init{
             itemView.setOnClickListener{
                 listener.onItemClick(adapterPosition)
@@ -36,7 +41,9 @@ class MyAdapter(private val newArrayList:ArrayList<DataItem>):
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = newArrayList[position]
+        var colorr = currentItem.color
         holder.button.text = currentItem.button
+//        holder.card.setBackgroundColor(colorr)
     }
 
     override fun getItemCount(): Int {

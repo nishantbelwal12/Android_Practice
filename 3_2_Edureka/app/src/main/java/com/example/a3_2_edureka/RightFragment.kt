@@ -41,12 +41,19 @@ class RightFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_right,container,false)
-        colorr = arguments?.getInt("color")
-        val flRightColor = view.findViewById<FrameLayout>(R.id.flRightColor)
-//        flRightColor.setBackgroundColor(colorr)
-        println("Color = $colorr")
+//        val view = inflater.inflate(R.layout.fragment_right,container,false)
+//        colorr = arguments?.getInt("color")
+//        val flRightColor = view.findViewById<FrameLayout>(R.id.flRightColor)
+////        flRightColor.setBackgroundColor(colorr)
+//        println("Color = $colorr")
         return inflater.inflate(R.layout.fragment_right, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        colorr = arguments?.getInt("color")
+        val flRightcolor = view.findViewById<FrameLayout>(R.id.flRightColor)
+        colorr?.let { resources.getColor(it) }?.let { flRightcolor.setBackgroundColor(it) }
     }
 
     companion object {
