@@ -2,6 +2,7 @@ package com.example.bookmyshow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -146,5 +147,13 @@ class MainActivity : AppCompatActivity() {
 
         offerRecyclerView.adapter = OfferLayoutAdapter(offeritem)
 //        offerPager.adapter = OfferLayoutAdapter(offeritem)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if(toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
