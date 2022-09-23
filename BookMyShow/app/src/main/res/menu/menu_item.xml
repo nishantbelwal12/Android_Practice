@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuHome"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"
+        />
+    <item
+        android:id="@+id/menuMovies"
+        android:title="Movies"
+        android:icon="@drawable/ic_baseline_movie_24"/>
+    <item
+        android:id="@+id/menuBookings"
+        android:title="Bookings"
+        android:icon="@drawable/ic_baseline_watch_later_24"/>
+
+    <item android:title="Profile">
+
+        <menu>
+            <item
+                android:id="@+id/menuLogin"
+                android:title="Login"
+                android:icon="@drawable/ic_baseline_login_24"/>
+        </menu>
+    </item>
+
+    <item android:title="Contact">
+
+        <menu>
+            <item
+                android:id="@+id/menuContact"
+                android:title="Phone"
+                android:icon="@drawable/ic_baseline_contact_phone_24"/>
+
+            <item
+                android:id="@+id/menuContactEmail"
+                android:title="Email"
+                android:icon="@drawable/ic_baseline_contact_mail_24"/>
+        </menu>
+    </item>
+
+</menu>

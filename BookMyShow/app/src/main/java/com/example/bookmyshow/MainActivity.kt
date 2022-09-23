@@ -2,33 +2,40 @@ package com.example.bookmyshow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.cardview.widget.CardView
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.*
+import androidx.viewpager2.widget.ViewPager2
 import com.example.bookmyshow.Adapters.BestSellerAdapter
 import com.example.bookmyshow.Adapters.MovieLayoutAdapter
 import com.example.bookmyshow.Adapters.OfferLayoutAdapter
 import com.example.bookmyshow.DataClasses.BestSellerItem
 import com.example.bookmyshow.DataClasses.MovieItem
 import com.example.bookmyshow.DataClasses.OfferItem
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
 //    private lateinit var viewPager: ViewPager2
 //    private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var offerRecyclerView : RecyclerView
+    private lateinit var offerPager: ViewPager2
     private lateinit var bestSellerRecyclerView: RecyclerView
     private lateinit var movieRecyclerView: RecyclerView
     private lateinit var offeritem:ArrayList<OfferItem>
     private lateinit var bestselleritem:ArrayList<BestSellerItem>
     private lateinit var movieitem:ArrayList<MovieItem>
+    private lateinit var bestSellerTextView: TextView
 
     lateinit var movieimage:Array<Int>
     lateinit var offerimage:Array<Int>
     lateinit var bestsellerimage:Array<Int>
     lateinit var moviename:Array<String>
     lateinit var bestsellername:Array<String>
+    lateinit var toggle:ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,9 +71,11 @@ class MainActivity : AppCompatActivity() {
         bestsellername = moviename
 
 
+//        offerPager = findViewById(R.id.offerRecyclerView)
         offerRecyclerView = findViewById(R.id.offerRecyclerView)
         bestSellerRecyclerView = findViewById(R.id.bestSellerRecyclerView)
         movieRecyclerView = findViewById(R.id.movieRecyclerView)
+        bestSellerTextView = findViewById(R.id.tvBestSellerMain)
 
         offerRecyclerView.setHasFixedSize(true)
         bestSellerRecyclerView.setHasFixedSize(true)
@@ -85,6 +94,8 @@ class MainActivity : AppCompatActivity() {
         getBestSellerItem()
         getMovieItem()
 
+        LinearSnapHelper().attachToRecyclerView(offerRecyclerView)
+
 
 
 //        val adapter = ViewPagerAdapter(images)
@@ -92,6 +103,13 @@ class MainActivity : AppCompatActivity() {
 //        viewPager.beginFakeDrag()
 //        viewPager.fakeDragBy(-5f)
 //        viewPager.endFakeDrag()
+
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
+        val navView:NavigationView = findViewById(R.id.nav_view)
+        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
 
@@ -125,6 +143,8 @@ class MainActivity : AppCompatActivity() {
             val item = OfferItem(offerimage[i])
             offeritem.add(item)
         }
+
         offerRecyclerView.adapter = OfferLayoutAdapter(offeritem)
+//        offerPager.adapter = OfferLayoutAdapter(offeritem)
     }
 }
