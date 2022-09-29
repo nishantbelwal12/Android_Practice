@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MoviePage">
+
+    // movie preview and book page
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        // movie preview trailer
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvMoviePreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+
+            //todo
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/ivMoviePage"/>
+
+        </androidx.cardview.widget.CardView>
+
+        // layout contains percentage like and review count
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cvMoviePreview">
+
+            // percentage likes
+            <TextView
+                android:id="@+id/tvMoviePercentRating"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="97%"
+                android:textSize="20sp" />
+
+            // total review count
+            <TextView
+                android:id="@+id/tvMovieReview"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:text="1.1K ratings"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        // add your ratings and reviews layout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvMovieAddYourRating"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:padding="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            //text containing add your rating and reviews
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvMovieAddRatingReview"
+                android:text="Add your ratings and reviews"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+        // straight line
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/cvMovieAddYourRating"
+            tools:layout_editor_absoluteX="16dp" />
+
+        // offers layout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            tools:layout_editor_absoluteX="0dp">
+
+            // textview containing Offers
+            <TextView
+                android:id="@+id/tvMovieOffers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="Offers"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            // recylerview which contains the offers
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovieOffers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieOffers" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        //straight line
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            tools:layout_editor_absoluteX="27dp" />
+
+        // cast layout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/view2">
+
+            //textView containing Cast
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="Cast"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            //recyclerview containing cast details
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovieCast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        //straight line
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:id="@+id/view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
+
+        //you might also like layout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/constraintLayout3"
+            app:layout_constraintTop_toBottomOf="@id/view3">
+
+            // textview containing you might also like
+            <TextView
+                android:id="@+id/tvMovieYouMightLike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You might also like"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            // reycler view containing movie recommendation
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovieYouMightLike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieYouMightLike" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        // card view to book ticket
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/cvMovieBookTicket"
+            app:cardBackgroundColor="@color/red"
+            app:cardCornerRadius="8dp"
+            android:padding="5dp"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout3">
+
+            //textview containing the Book your tickets
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book your Tickets"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                android:textStyle="bold|italic"
+                android:layout_gravity="center"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
