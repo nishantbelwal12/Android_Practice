@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movie_nav_graph"
+    app:startDestination="@id/movieMain">
+
+    <fragment
+        android:id="@+id/movieMain"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.MovieMain"
+        android:label="MovieMain" >
+        <action
+            android:id="@+id/action_movieMain_to_movieDetails"
+            app:destination="@id/movieDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_movieMain_to_upcomingMovie"
+            app:destination="@id/upcomingMovie"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/upcomingMovie"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.UpcomingMovie"
+        android:label="UpcomingMovie" >
+        <action
+            android:id="@+id/action_upcomingMovie_to_movieDetails"
+            app:destination="@id/movieDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.MovieDetails"
+        android:label="MovieDetails" >
+        <action
+            android:id="@+id/action_movieDetails_to_castDetails"
+            app:destination="@id/castDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_movieDetails_to_crewDetails"
+            app:destination="@id/crewDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/castDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.CastDetails"
+        android:label="CastDetails" />
+    <fragment
+        android:id="@+id/crewDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.CrewDetails"
+        android:label="CrewDetails" />
+    <fragment
+        android:id="@+id/savedMovies"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.SavedMovies"
+        android:label="SavedMovies" >
+        <action
+            android:id="@+id/action_savedMovies_to_movieDetails"
+            app:destination="@id/movieDetails"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+</navigation>
