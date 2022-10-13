@@ -4,23 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.mvvmbookmyshow.R
-import com.example.mvvmbookmyshow.adapters.MovieAdapter
 import com.example.mvvmbookmyshow.ui.MovieActivity
 import com.example.mvvmbookmyshow.ui.viewmodel.MovieViewModel
 
-class MovieDetails:Fragment(R.layout.fragment_movie_details) {
+class CrewDetailsFragment:Fragment(R.layout.fragment_crew_details) {
 
-    lateinit var viewModel: MovieViewModel
-    lateinit var movieAdapter: MovieAdapter
+//    lateinit var viewModel: MovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MovieActivity).viewModel
-    }
-
-    private fun setupRecyclerView(){
-        movieAdapter = MovieAdapter()
-
+//        viewModel = (activity as MovieActivity).viewModel
     }
 }

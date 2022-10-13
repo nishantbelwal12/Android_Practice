@@ -7,13 +7,13 @@ import com.example.mvvmbookmyshow.R
 import com.example.mvvmbookmyshow.ui.MovieActivity
 import com.example.mvvmbookmyshow.ui.viewmodel.MovieViewModel
 
-class CrewDetails:Fragment(R.layout.fragment_crew_details) {
+class SavedMoviesFragment:Fragment(R.layout.fragment_saved_movies) {
 
-    lateinit var viewModel: MovieViewModel
+//    lateinit var viewModel: MovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MovieActivity).viewModel
+//        viewModel = (activity as MovieActivity).viewModel
     }
 }

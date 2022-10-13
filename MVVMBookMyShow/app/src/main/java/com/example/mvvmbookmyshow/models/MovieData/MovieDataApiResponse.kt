@@ -1,11 +1,19 @@
 package com.example.mvvmbookmyshow.models.MovieData
 
+import androidx.room.Dao
 import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.mvvmbookmyshow.db.Converters
 
 @Entity(
     tableName = "Movies"
 
 )
+@TypeConverters(
+    Converters::class
+)
+
 data class MovieDataApiResponse(
     val adult: Boolean,
     val backdrop_path: String,
@@ -13,6 +21,7 @@ data class MovieDataApiResponse(
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,
+    @PrimaryKey
     val id: Int,
     val imdb_id: String,
     val original_language: String,

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.mvvmbookmyshow.db.Converters
+import com.example.mvvmbookmyshow.db.dao.MovieDao
 import com.example.mvvmbookmyshow.models.MovieData.MovieDataApiResponse
 
 @Database(
@@ -20,7 +21,7 @@ import com.example.mvvmbookmyshow.models.MovieData.MovieDataApiResponse
 
 abstract class MovieDataBase : RoomDatabase(){
 
-    abstract fun getMovieDao() : MovieDataApiResponse
+    abstract fun getMovieDao() : MovieDao
 
     companion object{
         @Volatile

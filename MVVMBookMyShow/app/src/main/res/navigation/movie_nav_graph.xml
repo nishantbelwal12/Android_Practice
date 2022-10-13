@@ -2,30 +2,30 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/movie_nav_graph"
-    app:startDestination="@id/movieMain">
+    app:startDestination="@id/popularMovie">
 
     <fragment
-        android:id="@+id/movieMain"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.MovieMain"
-        android:label="MovieMain" >
+        android:id="@+id/popularMovie"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.PopularMovieFragment"
+        android:label="PopularMovie">
         <action
             android:id="@+id/action_movieMain_to_movieDetails"
             app:destination="@id/movieDetails"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_movieMain_to_upcomingMovie"
             app:destination="@id/upcomingMovie"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/upcomingMovie"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.UpcomingMovie"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.UpcomingMovieFragment"
         android:label="UpcomingMovie" >
         <action
             android:id="@+id/action_upcomingMovie_to_movieDetails"
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetails"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.MovieDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.MovieDetailsFragment"
         android:label="MovieDetails" >
         <action
             android:id="@+id/action_movieDetails_to_castDetails"
@@ -56,15 +56,15 @@
     </fragment>
     <fragment
         android:id="@+id/castDetails"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.CastDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.CastDetailsFragment"
         android:label="CastDetails" />
     <fragment
         android:id="@+id/crewDetails"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.CrewDetails"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.CrewDetailsFragment"
         android:label="CrewDetails" />
     <fragment
         android:id="@+id/savedMovies"
-        android:name="com.example.mvvmbookmyshow.ui.fragments.SavedMovies"
+        android:name="com.example.mvvmbookmyshow.ui.fragments.SavedMoviesFragment"
         android:label="SavedMovies" >
         <action
             android:id="@+id/action_savedMovies_to_movieDetails"

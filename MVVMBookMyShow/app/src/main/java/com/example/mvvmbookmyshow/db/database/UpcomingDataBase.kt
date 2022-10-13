@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.mvvmbookmyshow.db.Converters
+import com.example.mvvmbookmyshow.db.dao.UpcomingDao
 import com.example.mvvmbookmyshow.models.UpcomingMovie.Result
 
 @Database(
@@ -20,7 +21,7 @@ import com.example.mvvmbookmyshow.models.UpcomingMovie.Result
 
 abstract class UpcomingDataBase : RoomDatabase(){
 
-    abstract fun getUpcomingMovieDao() : Result
+    abstract fun getUpcomingMovieDao() : UpcomingDao
 
     companion object{
         @Volatile

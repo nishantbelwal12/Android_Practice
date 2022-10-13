@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.mvvmbookmyshow.db.Converters
+import com.example.mvvmbookmyshow.db.dao.PopularDao
 import com.example.mvvmbookmyshow.models.PopularMovie.Result
 
 @Database(
@@ -19,7 +20,7 @@ import com.example.mvvmbookmyshow.models.PopularMovie.Result
 
 abstract class PopularDataBase : RoomDatabase(){
 
-    abstract fun getPopularMovieDao() : Result
+    abstract fun getPopularMovieDao() : PopularDao
     companion object{
         @Volatile
         private var instance: PopularDataBase? = null

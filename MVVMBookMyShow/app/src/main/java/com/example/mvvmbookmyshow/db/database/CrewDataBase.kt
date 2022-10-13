@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.mvvmbookmyshow.db.Converters
+import com.example.mvvmbookmyshow.db.dao.CrewDao
 import com.example.mvvmbookmyshow.models.CastCrew.Crew
 
 @Database(
@@ -20,7 +21,7 @@ import com.example.mvvmbookmyshow.models.CastCrew.Crew
 
 abstract class CrewDataBase : RoomDatabase(){
 
-    abstract fun getCrewDao() : Crew
+    abstract fun getCrewDao() : CrewDao
 
     companion object{
         @Volatile

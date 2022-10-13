@@ -7,22 +7,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mvvmbookmyshow.R
 import com.example.mvvmbookmyshow.db.database.MovieDataBase
+import com.example.mvvmbookmyshow.db.database.PopularDataBase
 import com.example.mvvmbookmyshow.repository.MovieRepository
+import com.example.mvvmbookmyshow.repository.PopularRepository
 import com.example.mvvmbookmyshow.ui.viewmodel.PopularViewModel
 import com.example.mvvmbookmyshow.ui.viewmodelproviderfactory.MovieViewModelProviderFactory
+import com.example.mvvmbookmyshow.ui.viewmodelproviderfactory.PopularViewModelProviderFactory
 import kotlinx.android.synthetic.main.activity_movie.*
 
 class MovieActivity : AppCompatActivity() {
 
-    lateinit var viewModel: PopularViewModel
+    lateinit var popularViewModel: PopularViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
 
-        val movieRepository = MovieRepository(MovieDataBase(this))
-        val viewModelProviderFactory = MovieViewModelProviderFactory(movieRepository)
-        viewModel = ViewModelProvider(this,viewModelProviderFactory).get(PopularViewModel::class.java)
+        val popularRepository = PopularRepository(PopularDataBase(this))
+        val popularModelProviderFactory = PopularViewModelProviderFactory(popularRepository)
+        popularViewModel = ViewModelProvider(this,popularModelProviderFactory).get(PopularViewModel::class.java)
         bottomNavigationView.setupWithNavController(movieNavHostFragment.findNavController())
     }
 }

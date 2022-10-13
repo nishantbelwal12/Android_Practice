@@ -3,7 +3,6 @@ package com.example.mvvmbookmyshow.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.mvvmbookmyshow.models.CastCrew.Crew
-import com.example.mvvmbookmyshow.models.MovieData.MovieDataApiResponse
 
 
 @Dao

@@ -9,43 +9,43 @@ import com.example.mvvmbookmyshow.models.MovieData.SpokenLanguage
 class Converters {
 
     @TypeConverter
-    fun fromGenre(genre:Genre):String{
-        return genre.name
+    fun fromGenre(genre:List<Genre>):Int{
+        return genre.size
     }
 
     @TypeConverter
-    fun toGenre(name:String):Genre{
-        return Genre(name.length,name)
+    fun toGenre(name:Int):List<Genre>{
+        return arrayListOf(Genre(0,""))
     }
 
     @TypeConverter
-    fun fromProductionCompany(productionCompany: ProductionCompany):String{
-        return productionCompany.name
+    fun fromProductionCompany(productionCompany: List<ProductionCompany>):Int{
+        return productionCompany.size
     }
 
     @TypeConverter
-    fun toProductionCompany(productionCompanyName: String):ProductionCompany{
-        return ProductionCompany(productionCompanyName.length,"logo",productionCompanyName,"country")
+    fun toProductionCompany(productionCompanyName: Int):List<ProductionCompany>{
+        return arrayListOf(ProductionCompany(productionCompanyName,"logo",productionCompanyName.toString(),"country"))
     }
 
     @TypeConverter
-    fun fromProductionCountry(productionCountry: ProductionCountry):String{
-        return productionCountry.name
+    fun fromProductionCountry(productionCountry: List<ProductionCountry>):Int{
+        return productionCountry.size
     }
 
     @TypeConverter
-    fun toProductionCountry(productionCountryName: String):ProductionCountry{
-        return ProductionCountry("iso",productionCountryName)
+    fun toProductionCountry(productionCountryName: Int):List<ProductionCountry>{
+        return arrayListOf(ProductionCountry("iso",productionCountryName.toString()))
     }
 
     @TypeConverter
-    fun fromSpokenLanguage(spokenLanguage: SpokenLanguage):String{
-        return spokenLanguage.name
+    fun fromSpokenLanguage(spokenLanguage: List<SpokenLanguage>):Int{
+        return spokenLanguage.size
     }
 
     @TypeConverter
-    fun toSpokenLanguage(spokenLanguageName: String):SpokenLanguage{
-        return SpokenLanguage("name","iso",spokenLanguageName)
+    fun toSpokenLanguage(spokenLanguageName: Int):List<SpokenLanguage>{
+        return arrayListOf(SpokenLanguage("name","iso",spokenLanguageName.toString()))
     }
 
     @TypeConverter
@@ -58,4 +58,13 @@ class Converters {
         return arrayListOf(genreIdSize)
     }
 
+    @TypeConverter
+    fun fromBelongsTo(belong: Any):String{
+        return belong.toString()
+    }
+
+    @TypeConverter
+    fun toBelongsTo(belong: String):Any{
+        return belong
+    }
 }

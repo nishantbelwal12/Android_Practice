@@ -1,12 +1,19 @@
 package com.example.mvvmbookmyshow.models.PopularMovie
 
+import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.mvvmbookmyshow.db.Converters
 
 @Entity(
     tableName = "PopularMovies"
 
 )
+@TypeConverters(
+    Converters::class
+)
+
 data class Result(
     val adult: Boolean,
     val backdrop_path: String,

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.mvvmbookmyshow.db.Converters
+import com.example.mvvmbookmyshow.db.dao.CastDao
 import com.example.mvvmbookmyshow.models.CastCrew.Cast
 
 @Database(
@@ -20,7 +21,7 @@ import com.example.mvvmbookmyshow.models.CastCrew.Cast
 
 abstract class CastDataBase : RoomDatabase(){
 
-    abstract fun getCastDao() : Cast
+    abstract fun getCastDao() : CastDao
 
     companion object{
         @Volatile

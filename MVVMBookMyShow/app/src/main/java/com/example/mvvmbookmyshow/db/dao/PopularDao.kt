@@ -2,7 +2,6 @@ package com.example.mvvmbookmyshow.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.mvvmbookmyshow.models.MovieData.MovieDataApiResponse
 import com.example.mvvmbookmyshow.models.PopularMovie.Result
 
 
