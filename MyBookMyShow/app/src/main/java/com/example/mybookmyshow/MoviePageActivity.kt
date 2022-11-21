@@ -95,6 +95,18 @@ class MoviePageActivity : AppCompatActivity() {
 
 
                         about.text = resp.overview
+                        val original_line_count = about.lineCount
+                        var display_full = false
+                        about.setOnClickListener {
+                            if(display_full){
+                                about.maxLines=2
+                            }
+                            else{
+                                about.maxLines=original_line_count
+                            }
+                            display_full = !display_full
+                        }
+
                         reviews.text = resp.popularity.toInt().toString()
                         duration.text = "Duration: - ${resp.runtime.toString()} mins"
 
