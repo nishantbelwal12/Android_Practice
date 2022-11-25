@@ -36,7 +36,14 @@ class CastAdapter(val castList: List<Cast>):RecyclerView.Adapter<CastAdapter.Cas
             castName.text = dataInput.name
             castJob.text = dataInput.known_for_department
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.profile_path}"
-            Glide.with(itemView.context).load(imagePath).dontAnimate().into(castPhoto)
+            if(dataInput.profile_path==null){
+                castPhoto.setImageResource(R.drawable.img)
+            }
+            else {
+                Glide.with(itemView.context).load(imagePath).dontAnimate()
+                    .into(castPhoto)
+            }
+
         }
 
         init {

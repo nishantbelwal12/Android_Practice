@@ -26,16 +26,22 @@ class CrewAdapter(val crewList: List<Crew>): RecyclerView.Adapter<CrewAdapter.Cr
 
     class CrewViewHolder(itemView: View, listener: onItemClickListener) :
         RecyclerView.ViewHolder(itemView) {
-        val castPhoto: ImageView = itemView.findViewById(R.id.ivCastCrewRecyclerMoviePage)
-        val castName: TextView = itemView.findViewById(R.id.tvCastCrewNameMoviePage)
-        val castJob: TextView = itemView.findViewById(R.id.tvCastCrewJobMoviePage)
+        val crewPhoto: ImageView = itemView.findViewById(R.id.ivCastCrewRecyclerMoviePage)
+        val crewName: TextView = itemView.findViewById(R.id.tvCastCrewNameMoviePage)
+        val crewJob: TextView = itemView.findViewById(R.id.tvCastCrewJobMoviePage)
 
         fun bind(dataInput: Crew) {
 
-            castName.text = dataInput.name
-            castJob.text = dataInput.known_for_department
+            crewName.text = dataInput.name
+            crewJob.text = dataInput.known_for_department
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.profile_path}"
-            Glide.with(itemView.context).load(imagePath).dontAnimate().into(castPhoto)
+            if(dataInput.profile_path==null){
+                crewPhoto.setImageResource(R.drawable.img)
+            }
+            else {
+                Glide.with(itemView.context).load(imagePath).dontAnimate()
+                    .into(crewPhoto)
+            }
         }
 
         init {

@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(Build.VERSION.SDK_INT>=25){
+            Shortcuts.setUp(applicationContext)
+        }
+
         newPromotionsViewPager = findViewById(R.id.vpMainActivity)
         languageRecyclerView = findViewById(R.id.rvLanguageMainActivity)
         movieRecyclerView = findViewById(R.id.rvMovieMainActivity)

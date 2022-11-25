@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +15,19 @@ import com.bumptech.glide.Glide
 import com.example.mybookmyshow.APIInterface.CastCrew
 import com.example.mybookmyshow.APIInterface.Movie
 import com.example.mybookmyshow.APIInterface.RelatedMovies
+import com.example.mybookmyshow.APIInterface.Trailer
 import com.example.mybookmyshow.DataClass.CastCrewData.CastCrewAPIData
 import com.example.mybookmyshow.DataClass.MovieData.MovieAPIData
 import com.example.mybookmyshow.DataClass.TopRated.TopRatedAPIData
+import com.example.mybookmyshow.DataClass.Trailer.TrailerAPIResponse
 import com.example.mybookmyshow.RecyclerAdapter.CastAdapter
 import com.example.mybookmyshow.RecyclerAdapter.CrewAdapter
 import com.example.mybookmyshow.RecyclerAdapter.SimilarMoviesAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.youtube.player.YouTubeBaseActivity
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,16 +35,20 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MoviePageActivity : AppCompatActivity() {
+class MoviePageActivity : YouTubeBaseActivity() {
 
     private lateinit var similarRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
 
     private lateinit var crewRecyclerView: RecyclerView
+    private lateinit var youTubePlayer: YouTubePlayerView
 
     lateinit var similarAdapter: SimilarMoviesAdapter
     lateinit var castAdapter: CastAdapter
     lateinit var crewAdapter: CrewAdapter
+    lateinit var youtubePlayerInit:YouTubePlayer.OnInitializedListener
+
+    var defaultMovieId = 500
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,14 +58,22 @@ class MoviePageActivity : AppCompatActivity() {
 
         val bundle: Bundle?= intent.extras
 
-        val image: ImageView = findViewById(R.id.ivMoviePosterMoviePage)
         val releaseDate: TextView = findViewById(R.id.tvReleaseDateMoviePage)
         val about: TextView = findViewById(R.id.tvAboutMoviePage)
         val reviews: TextView = findViewById(R.id.tvLikesMoviePage)
         val duration: TextView = findViewById(R.id.tvDurationMoviePage)
-//        rating.text = bundle?.getInt("position").toString()
-        val movieId = bundle?.getInt("MovieId")
+        val movieName: TextView = findViewById(R.id.tvMovieNameMoviePage)
+        val fabMoviePage: FloatingActionButton = findViewById(R.id.fabMoviePage)
 
+//        rating.text = bundle?.getInt("position").toString()
+        var movieId = bundle?.getInt("MovieId")
+        if(movieId==null){
+            movieId=defaultMovieId
+        }
+
+        fabMoviePage.setOnClickListener {
+            defaultMovieId=movieId
+        }
 
         val request = ServiceBuilder.buildService(Movie::class.java)
         val call = movieId?.let { request.getMovie(it,getString(R.string.api_key)) }
@@ -95,20 +115,24 @@ class MoviePageActivity : AppCompatActivity() {
 
 
                         about.text = resp.overview
-                        val original_line_count = about.lineCount
-                        var display_full = false
-                        about.setOnClickListener {
-                            if(display_full){
-                                about.maxLines=2
+                        val totalLines = about.lineCount
+                        about.maxLines = 2
+                        var fullText = false
+
+                        about.setOnClickListener(){
+                            if(fullText){
+                                about.maxLines = 2
+                                fullText = false
                             }
                             else{
-                                about.maxLines=original_line_count
+                                about.maxLines = totalLines
+                                fullText = true
                             }
-                            display_full = !display_full
                         }
-
+                        movieName.text = resp.original_title
                         reviews.text = resp.popularity.toInt().toString()
                         duration.text = "Duration: - ${resp.runtime.toString()} mins"
+
 
                         /*
                         movieRecyclerView.apply {
@@ -130,8 +154,64 @@ class MoviePageActivity : AppCompatActivity() {
 
                             })
                         }*/
-                        val imagePath = "http://image.tmdb.org/t/p/w500${resp.poster_path}"
-                        Glide.with(baseContext).load(imagePath).dontAnimate().into(image)
+
+                        val newResponseTrailer = ServiceBuilder.buildService(Trailer::class.java)
+                        val callNewTrailer = newResponseTrailer.getTrailer(movieId,getString(R.string.api_key))
+
+                        callNewTrailer.enqueue(object : Callback<TrailerAPIResponse> {
+                            override fun onResponse(
+                                call: Call<TrailerAPIResponse>,
+                                response: Response<TrailerAPIResponse>
+                            ) {
+
+                                println("\n\n\n\n\n\n response of video osdnasfas ${response.body()!!.results}\n\n\n\n")
+                                youTubePlayer = findViewById(R.id.vvMovieVideoMoviePage)
+
+                                youtubePlayerInit = object: YouTubePlayer.OnInitializedListener{
+                                    override fun onInitializationSuccess(
+                                        p0: YouTubePlayer.Provider?,
+                                        p1: YouTubePlayer?,
+                                        p2: Boolean
+                                    ) {
+                                        if(response.body()!!.results.size>0){
+
+                                            if(response.body()!!.results[0].key.length>0){
+                                                p1?.loadVideo(response.body()!!.results[0].key)
+                                            }
+                                            else{
+                                                p1?.loadVideo(R.string.samplevideo.toString())
+                                            }
+
+                                        }
+                                        else{
+                                            p1?.loadVideo(R.string.samplevideo.toString())
+                                        }
+
+                                    }
+
+                                    override fun onInitializationFailure(
+                                        p0: YouTubePlayer.Provider?,
+                                        p1: YouTubeInitializationResult?
+                                    ) {
+                                        Toast.makeText(applicationContext, "Failed $p1", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                }
+                                youTubePlayer.initialize("AIzaSyDSuJrD8RZtgm0r__8QwloAQekROA9PZMM",youtubePlayerInit)
+//
+
+                            }
+
+                            override fun onFailure(call: Call<TrailerAPIResponse>, t: Throwable) {
+                                TODO("Not yet implemented")
+                            }
+                        })
+
+
+
+
+//                        val imagePath = "http://image.tmdb.org/t/p/w500${resp.poster_path}"
+//                        Glide.with(baseContext).load(imagePath).dontAnimate().into(image)
 
                         val newResponseCast = ServiceBuilder.buildService(CastCrew::class.java)
                         val callNewCast = newResponseCast.getcredits(movieId,getString(R.string.api_key))

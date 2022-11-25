@@ -32,6 +32,7 @@ class MoviesMainAdapter(val moviesList: List<Result>): RecyclerView.Adapter<Movi
             movieRating.text = dataInput.popularity.toString()
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.poster_path}"
             Glide.with(itemView.context).load(imagePath).dontAnimate().into(movieTitle)
+
         }
 
         init{

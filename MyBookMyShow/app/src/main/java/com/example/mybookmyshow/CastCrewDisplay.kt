@@ -37,7 +37,13 @@ class CastCrewDisplay : AppCompatActivity() {
                     if (response.isSuccessful){
 
                         val imagePath = "http://image.tmdb.org/t/p/w500${response.body()!!.profile_path}"
-                        Glide.with(baseContext).load(imagePath).dontAnimate().into(castCrewProfile)
+                        if(imagePath.length<4){
+                            castCrewProfile.setImageResource(R.drawable.img)
+                        }
+                        else {
+                            Glide.with(baseContext).load(imagePath).dontAnimate()
+                                .into(castCrewProfile)
+                        }
                         castCrewName.text = response.body()!!.name
                         castCrewAbout.text = response.body()!!.biography
     //
