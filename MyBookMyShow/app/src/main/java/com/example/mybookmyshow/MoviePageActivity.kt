@@ -2,16 +2,12 @@ package com.example.mybookmyshow
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.mybookmyshow.APIInterface.CastCrew
 import com.example.mybookmyshow.APIInterface.Movie
 import com.example.mybookmyshow.APIInterface.RelatedMovies
@@ -31,6 +27,7 @@ import com.google.android.youtube.player.YouTubePlayerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -52,33 +49,42 @@ class MoviePageActivity : YouTubeBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_page)
 
         val bundle: Bundle?= intent.extras
-
         val releaseDate: TextView = findViewById(R.id.tvReleaseDateMoviePage)
         val about: TextView = findViewById(R.id.tvAboutMoviePage)
         val reviews: TextView = findViewById(R.id.tvLikesMoviePage)
         val duration: TextView = findViewById(R.id.tvDurationMoviePage)
         val movieName: TextView = findViewById(R.id.tvMovieNameMoviePage)
         val fabMoviePage: FloatingActionButton = findViewById(R.id.fabMoviePage)
-
-//        rating.text = bundle?.getInt("position").toString()
         var movieId = bundle?.getInt("MovieId")
+
         if(movieId==null){
-            movieId=defaultMovieId
+
+            this.openFileInput(getString(R.string.filename)).bufferedReader().forEachLine { lines ->
+
+                if(lines!=null){
+                    movieId=lines.toInt()
+                }
+                else{
+                    movieId=defaultMovieId
+                }
+            }
         }
 
         fabMoviePage.setOnClickListener {
-            defaultMovieId=movieId
+            val fileContents = movieId
+            File(getString(R.string.filename)).delete()
+            this.openFileOutput(getString(R.string.filename), MODE_PRIVATE).use {
+                it.write(fileContents.toString().toByteArray())
+                println("\n\n\n\n writing movie $fileContents \n\n\n\n")
+            }
         }
 
         val request = ServiceBuilder.buildService(Movie::class.java)
         val call = movieId?.let { request.getMovie(it,getString(R.string.api_key)) }
-
-        println("Got Bundle $movieId")
 
         if (call != null) {
             call.enqueue(object : Callback<MovieAPIData>
@@ -88,21 +94,10 @@ class MoviePageActivity : YouTubeBaseActivity() {
                 override fun onResponse(call: Call<MovieAPIData>, response: Response<MovieAPIData>) {
                     if (response.isSuccessful){
 
-                        //                    var movieList = arrayOf<TopRatedMovies>()
-                        //                    for(i in response.body()!!.results.){
-                        //                        movieList.add()
-                        //                    }
                         val newResponse = ServiceBuilder.buildService(RelatedMovies::class.java)
                         val callNew = newResponse.getSimilar(movieId,getString(R.string.api_key))
                         val resp = response.body()!!
-                        println("Inside if")
-                        println(response.body())
-
-                        val c = Calendar.getInstance()
-                        val year = c.get(Calendar.DATE)
-
                         val current = LocalDateTime.now()
-
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                         val formatted = current.format(formatter)
 
@@ -112,7 +107,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
                         else{
                             releaseDate.text = "Released on ${resp.release_date}"
                         }
-
 
                         about.text = resp.overview
                         val totalLines = about.lineCount
@@ -132,28 +126,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
                         movieName.text = resp.original_title
                         reviews.text = resp.popularity.toInt().toString()
                         duration.text = "Duration: - ${resp.runtime.toString()} mins"
-
-
-                        /*
-                        movieRecyclerView.apply {
-                            setHasFixedSize(true)
-                            layoutManager = GridLayoutManager(this@MainActivity,2)
-                            movieAdapter = MoviesAdapter(response.body()!!.results)
-                            movieRecyclerView.adapter = movieAdapter
-                            println(response.body()!!.results[0])
-
-                            movieAdapter.setOnItemClickListener(object : MoviesAdapter.onItemClickListener{
-                                override fun onItemClick(position: Int) {
-
-                                    Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this@MainActivity,MoviePage::class.java)
-                                    intent.putExtra("position",position)
-                                    intent.putExtra("MovieId",response.body()!!.results[position].id)
-                                    startActivity(intent)
-                                }
-
-                            })
-                        }*/
 
                         val newResponseTrailer = ServiceBuilder.buildService(Trailer::class.java)
                         val callNewTrailer = newResponseTrailer.getTrailer(movieId,getString(R.string.api_key))
@@ -198,7 +170,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
 
                                 }
                                 youTubePlayer.initialize("AIzaSyDSuJrD8RZtgm0r__8QwloAQekROA9PZMM",youtubePlayerInit)
-//
 
                             }
 
@@ -206,12 +177,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                 TODO("Not yet implemented")
                             }
                         })
-
-
-
-
-//                        val imagePath = "http://image.tmdb.org/t/p/w500${resp.poster_path}"
-//                        Glide.with(baseContext).load(imagePath).dontAnimate().into(image)
 
                         val newResponseCast = ServiceBuilder.buildService(CastCrew::class.java)
                         val callNewCast = newResponseCast.getcredits(movieId,getString(R.string.api_key))
@@ -234,8 +199,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                 crewRecyclerView.setHasFixedSize(true)
                                 crewAdapter = CrewAdapter(response.body()!!.crew)
                                 crewRecyclerView.adapter = crewAdapter
-
-
 
                                 castAdapter.setOnItemClickListener(object :CastAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
@@ -271,18 +234,11 @@ class MoviePageActivity : YouTubeBaseActivity() {
 
                         })
 
-
-
-
-
-
                         callNew.enqueue(object : Callback<TopRatedAPIData> {
                             override fun onResponse(
                                 call: Call<TopRatedAPIData>,
                                 response: Response<TopRatedAPIData>
                             ) {
-
-
 
                                 similarRecyclerView = findViewById(R.id.rvYouMightLikeMoviePage)
                                 similarRecyclerView.layoutManager = LinearLayoutManager(this@MoviePageActivity,
@@ -291,8 +247,6 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                 similarAdapter = SimilarMoviesAdapter(response.body()!!.results)
                                 similarRecyclerView.adapter = similarAdapter
 
-
-
                                 similarAdapter.setOnItemClickListener(object :SimilarMoviesAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
 
@@ -300,6 +254,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                         val intent = Intent(this@MoviePageActivity,MoviePageActivity::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("MovieId",response.body()!!.results[position].id)
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                         println("Id = ${response.body()!!.results[position].id}")
                                         startActivity(intent)
 

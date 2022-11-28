@@ -29,7 +29,7 @@ object Shortcuts {
             .build()
 
         val movieIntent = Intent(context,MoviePageActivity::class.java)
-//        movieIntent.putExtra("MovieId",500)
+//        movieIntent.putExtra("MovieId",500n)
         movieIntent.action = Intent.ACTION_VIEW
         movieIntent.data = Uri.parse("500")
         movieIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK

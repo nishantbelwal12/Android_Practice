@@ -9,5 +9,5 @@ import retrofit2.http.Query
 interface CastCrew {
 
     @GET("/3/movie/{movie_id}/credits")
-    fun getcredits(@Path("movie_id") movie_id:Int, @Query("api_key") key:String): Call<CastCrewAPIData>
+    fun getcredits(@Path("movie_id") movie_id:Int?, @Query("api_key") key:String): Call<CastCrewAPIData>
 }

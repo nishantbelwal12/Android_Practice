@@ -22,8 +22,6 @@ class UpcomingMovies : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upcoming_movies)
 
-        upcomingRecycler = findViewById(R.id.rvUpcomingMoviePage)
-
         val request = ServiceBuilder.buildService(Upcoming::class.java)
         val call = request.getUpcoming(getString(R.string.api_key))
 
@@ -32,12 +30,9 @@ class UpcomingMovies : AppCompatActivity() {
             override fun onResponse(call: Call<UpcomingMovieAPIData>, response: Response<UpcomingMovieAPIData>) {
                 if (response.isSuccessful){
 
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
                     println("Inside upcoming movie")
                     println(response.body()!!.results)
+                    upcomingRecycler = findViewById(R.id.rvUpcomingMoviePage)
 
                     upcomingRecycler.apply {
                         setHasFixedSize(true)
@@ -54,6 +49,8 @@ class UpcomingMovies : AppCompatActivity() {
                                 val intent = Intent(this@UpcomingMovies,MoviePageActivity::class.java)
                                 intent.putExtra("position",position)
                                 intent.putExtra("MovieId",response.body()!!.results[position].id)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 println("Id = ${response.body()!!.results[position].id}")
                                 startActivity(intent)
                             }

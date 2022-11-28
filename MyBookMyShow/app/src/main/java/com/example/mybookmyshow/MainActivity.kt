@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -38,8 +39,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var languageList: ArrayList<String>
     lateinit var languageCodeList: ArrayList<String>
     lateinit var movieAdapter:MoviesMainAdapter
-
-    //  val BASE_URL = "https://api.themoviedb.org"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +102,11 @@ class MainActivity : AppCompatActivity() {
             "sv"
 
         )
+
+        newPromotionsViewPager.setVisibility(View.VISIBLE)
+        languageRecyclerView.setVisibility(View.VISIBLE)
+        comingSoonCard.setVisibility(View.VISIBLE)
+
         val current = LocalDateTime.now()
 
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -239,6 +243,11 @@ class MainActivity : AppCompatActivity() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
+
+                newPromotionsViewPager.setVisibility(View.GONE)
+                languageRecyclerView.setVisibility(View.GONE)
+                comingSoonCard.setVisibility(View.GONE)
+
                 movieRecyclerView = findViewById(R.id.rvMovieMainActivity)
                 movieRecyclerView.layoutManager = GridLayoutManager(this@MainActivity,2)
 
@@ -254,11 +263,6 @@ class MainActivity : AppCompatActivity() {
                     {
                         override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                             if (response.isSuccessful){
-
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
 
                                 movieRecyclerView.apply {
                                     setHasFixedSize(true)
@@ -287,11 +291,12 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
 
-
-
                 }
                 else{
 
+                    newPromotionsViewPager.setVisibility(View.VISIBLE)
+                    languageRecyclerView.setVisibility(View.VISIBLE)
+                    comingSoonCard.setVisibility(View.VISIBLE)
 
                     val request = ServiceBuilder.buildService(TopRated::class.java)
                     val call = request.getTopRated(getString(R.string.api_key))
@@ -300,12 +305,6 @@ class MainActivity : AppCompatActivity() {
                     {
                         override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                             if (response.isSuccessful){
-
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
-
                                 movieRecyclerView.apply {
                                     setHasFixedSize(true)
                                     layoutManager = GridLayoutManager(this@MainActivity,2)
@@ -339,9 +338,12 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
 
-
-
             override fun onQueryTextChange(p0: String?): Boolean {
+
+
+                newPromotionsViewPager.setVisibility(View.GONE)
+                languageRecyclerView.setVisibility(View.GONE)
+                comingSoonCard.setVisibility(View.GONE)
 
                 movieRecyclerView = findViewById(R.id.rvMovieMainActivity)
                 movieRecyclerView.layoutManager = GridLayoutManager(this@MainActivity,2)
@@ -359,17 +361,11 @@ class MainActivity : AppCompatActivity() {
                         override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                             if (response.isSuccessful){
 
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
-
                                 movieRecyclerView.apply {
                                     setHasFixedSize(true)
                                     layoutManager = GridLayoutManager(this@MainActivity,2)
                                     movieAdapter = MoviesMainAdapter(response.body()!!.results)
                                     movieRecyclerView.adapter = movieAdapter
-//                                    println(response.body()!!.results[0])
 
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
@@ -391,11 +387,12 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
 
-
-
                 }
                 else{
 
+                    newPromotionsViewPager.setVisibility(View.VISIBLE)
+                    languageRecyclerView.setVisibility(View.VISIBLE)
+                    comingSoonCard.setVisibility(View.VISIBLE)
 
                     val request = ServiceBuilder.buildService(TopRated::class.java)
                     val call = request.getTopRated(getString(R.string.api_key))
@@ -405,17 +402,11 @@ class MainActivity : AppCompatActivity() {
                         override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                             if (response.isSuccessful){
 
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
-
                                 movieRecyclerView.apply {
                                     setHasFixedSize(true)
                                     layoutManager = GridLayoutManager(this@MainActivity,2)
                                     movieAdapter = MoviesMainAdapter(response.body()!!.results)
                                     movieRecyclerView.adapter = movieAdapter
-//                                    println(response.body()!!.results[0])
 
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
@@ -436,8 +427,6 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
                         }
                     })
-
-
 
                 }
                 return false
