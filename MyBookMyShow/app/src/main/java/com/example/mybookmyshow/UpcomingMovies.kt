@@ -1,8 +1,11 @@
 package com.example.mybookmyshow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,19 +20,23 @@ class UpcomingMovies : AppCompatActivity() {
 
     private lateinit var upcomingRecycler: RecyclerView
     lateinit var upcomingMovieAdapter:UpcomingMovieAdapter
+    lateinit var progressBar: ProgressBar
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upcoming_movies)
 
         val request = ServiceBuilder.buildService(Upcoming::class.java)
         val call = request.getUpcoming(getString(R.string.api_key))
+        progressBar = findViewById(R.id.progress_bar_upcoming_movie)
 
         call.enqueue(object : Callback<UpcomingMovieAPIData>
         {
             override fun onResponse(call: Call<UpcomingMovieAPIData>, response: Response<UpcomingMovieAPIData>) {
                 if (response.isSuccessful){
 
+                    progressBar.visibility = View.GONE
                     println("Inside upcoming movie")
                     println(response.body()!!.results)
                     upcomingRecycler = findViewById(R.id.rvUpcomingMoviePage)
@@ -45,7 +52,7 @@ class UpcomingMovies : AppCompatActivity() {
                             override fun onItemClick(position: Int) {
 
                                 println("Clicked on Upcoming movie page")
-                                Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this@UpcomingMovies,MoviePageActivity::class.java)
                                 intent.putExtra("position",position)
                                 intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -60,7 +67,8 @@ class UpcomingMovies : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<UpcomingMovieAPIData>, t: Throwable) {
-                Toast.makeText(this@UpcomingMovies, "${t.message}", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.VISIBLE
+                Toast.makeText(this@UpcomingMovies, "Internet not available: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
 

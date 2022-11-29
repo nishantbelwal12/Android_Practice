@@ -1,8 +1,11 @@
 package com.example.mybookmyshow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -44,9 +47,11 @@ class MoviePageActivity : YouTubeBaseActivity() {
     lateinit var castAdapter: CastAdapter
     lateinit var crewAdapter: CrewAdapter
     lateinit var youtubePlayerInit:YouTubePlayer.OnInitializedListener
+    lateinit var progressBar: ProgressBar
 
     var defaultMovieId = 500
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -60,6 +65,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
         val movieName: TextView = findViewById(R.id.tvMovieNameMoviePage)
         val fabMoviePage: FloatingActionButton = findViewById(R.id.fabMoviePage)
         var movieId = bundle?.getInt("MovieId")
+        progressBar = findViewById(R.id.progress_bar_movie_page)
 
         if(movieId==null){
 
@@ -94,6 +100,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
                 override fun onResponse(call: Call<MovieAPIData>, response: Response<MovieAPIData>) {
                     if (response.isSuccessful){
 
+                        progressBar.visibility = View.GONE
                         val newResponse = ServiceBuilder.buildService(RelatedMovies::class.java)
                         val callNew = newResponse.getSimilar(movieId,getString(R.string.api_key))
                         val resp = response.body()!!
@@ -101,7 +108,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                         val formatted = current.format(formatter)
 
-                        if(resp.release_date.compareTo(formatted)>0){
+                        if(resp.release_date > formatted){
                             releaseDate.text = "Releasing on ${resp.release_date}"
                         }
                         else{
@@ -145,10 +152,11 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                         p1: YouTubePlayer?,
                                         p2: Boolean
                                     ) {
-                                        if(response.body()!!.results.size>0){
+                                        if(response.body()!!.results.isNotEmpty()){
 
-                                            if(response.body()!!.results[0].key.length>0){
-                                                p1?.loadVideo(response.body()!!.results[0].key)
+                                            if(response.body()!!.results[0].key.isNotEmpty()){
+                                                p1?.cueVideo(response.body()!!.results[0].key)
+//                                                println("\n\n\n\n\n Video response ${response.body()!!.results[0].key}\n\n\n")
                                             }
                                             else{
                                                 p1?.loadVideo(R.string.samplevideo.toString())
@@ -203,7 +211,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                 castAdapter.setOnItemClickListener(object :CastAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
 
-                                        Toast.makeText(this@MoviePageActivity, "Clicked on Cast", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(this@MoviePageActivity, "Clicked on Cast", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this@MoviePageActivity,CastCrewDisplay::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("CastCrewId",response.body()!!.cast[position].id)
@@ -217,7 +225,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
 
                                 crewAdapter.setOnItemClickListener(object : CrewAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
-                                        Toast.makeText(this@MoviePageActivity, "Clicked on Crew", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(this@MoviePageActivity, "Clicked on Crew", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this@MoviePageActivity,CastCrewDisplay::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("CastCrewId",response.body()!!.crew[position].id)
@@ -250,7 +258,7 @@ class MoviePageActivity : YouTubeBaseActivity() {
                                 similarAdapter.setOnItemClickListener(object :SimilarMoviesAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
 
-                                        Toast.makeText(this@MoviePageActivity, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(this@MoviePageActivity, "Clicked on ", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this@MoviePageActivity,MoviePageActivity::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -273,7 +281,8 @@ class MoviePageActivity : YouTubeBaseActivity() {
 
                 override fun onFailure(call: Call<MovieAPIData>, t: Throwable) {
                     println("Inside failure")
-                    Toast.makeText(applicationContext, "not found", Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.VISIBLE
+                    Toast.makeText(applicationContext, "Movie Details not found", Toast.LENGTH_SHORT).show()
                 }
             })
         }

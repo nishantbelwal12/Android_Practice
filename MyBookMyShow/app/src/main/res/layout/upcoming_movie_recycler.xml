@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Releasingg on"
+                    android:text="Releasing on"
                     android:textColor="@color/white"
                     android:background="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/ivUpcomingMoviePoster"

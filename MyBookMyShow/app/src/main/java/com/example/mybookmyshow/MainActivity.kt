@@ -1,11 +1,13 @@
 package com.example.mybookmyshow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -39,7 +41,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var languageList: ArrayList<String>
     lateinit var languageCodeList: ArrayList<String>
     lateinit var movieAdapter:MoviesMainAdapter
+    lateinit var progressBar: ProgressBar
 
+
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         languageRecyclerView = findViewById(R.id.rvLanguageMainActivity)
         movieRecyclerView = findViewById(R.id.rvMovieMainActivity)
         comingSoonCard = findViewById(R.id.cvComingSoonMainActivity)
+        progressBar = findViewById(R.id.progress_bar_main_page)
 
         languageRecyclerView.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL,false)
@@ -124,22 +130,17 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                 if (response.isSuccessful){
 
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
-
                     movieRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = GridLayoutManager(this@MainActivity,2)
                         movieAdapter = MoviesMainAdapter(response.body()!!.results)
                         movieRecyclerView.adapter = movieAdapter
-//                        println(response.body()!!.results[0])
+                        progressBar.visibility = View.GONE
 
                         movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                             override fun onItemClick(position: Int) {
 
-                                Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                 intent.putExtra("position",position)
                                 intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -152,7 +153,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<TopRatedAPIData>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.VISIBLE
+                Toast.makeText(this@MainActivity, "Internet not available: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -171,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int) {
 
 
-                Toast.makeText(applicationContext, "clicked on promotions", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext, "clicked on promotions", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -180,6 +182,7 @@ class MainActivity : AppCompatActivity() {
         languageAdapter.setOnItemClickListener(object : LanguageAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
 
+                progressBar.visibility=View.VISIBLE
 
                 val request = ServiceBuilder.buildService(Language::class.java)
                 val call = request.getLanguageMovie(getString(R.string.api_key),languageCodeList[position])
@@ -189,24 +192,19 @@ class MainActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<TopRatedAPIData>, response: Response<TopRatedAPIData>) {
                         if (response.isSuccessful){
 
-//                    var movieList = arrayOf<TopRatedMovies>()
-//                    for(i in response.body()!!.results.){
-//                        movieList.add()
-//                    }
-
-                            Toast.makeText(applicationContext, "Movies to display- ${response.body()!!.results.size}", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(applicationContext, "Movies to display- ${response.body()!!.results.size}", Toast.LENGTH_SHORT).show()
 //                            println("Length of response - ${response.body()!!.results.size}")
                             movieRecyclerView.apply {
                                 setHasFixedSize(true)
                                 layoutManager = GridLayoutManager(this@MainActivity,2)
                                 movieAdapter = MoviesMainAdapter(response.body()!!.results)
                                 movieRecyclerView.adapter = movieAdapter
-//                                println(response.body()!!.results[0])
+                                progressBar.visibility=View.GONE
 
                                 movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                     override fun onItemClick(position: Int) {
 
-                                        Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                        Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -220,7 +218,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     override fun onFailure(call: Call<TopRatedAPIData>, t: Throwable) {
-                        Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+
+                        progressBar.visibility=View.VISIBLE
+                        Toast.makeText(this@MainActivity, "Internet not available: ${t.message}", Toast.LENGTH_SHORT).show()
                     }
                 })
 
@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
 
-                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                             val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                             intent.putExtra("position",position)
                                             intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -287,7 +287,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<TopRatedAPIData>, t: Throwable) {
-                            Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "Internet not available: ${t.message}", Toast.LENGTH_SHORT).show()
                         }
                     })
 
@@ -315,7 +315,7 @@ class MainActivity : AppCompatActivity() {
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
 
-                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                             val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                             intent.putExtra("position",position)
                                             intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -328,7 +328,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<TopRatedAPIData>, t: Throwable) {
-                            Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "Internet not available :${t.message}", Toast.LENGTH_SHORT).show()
                         }
                     })
 
@@ -370,7 +370,7 @@ class MainActivity : AppCompatActivity() {
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
 
-                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                             val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                             intent.putExtra("position",position)
                                             intent.putExtra("MovieId",response.body()!!.results[position].id)
@@ -411,7 +411,7 @@ class MainActivity : AppCompatActivity() {
                                     movieAdapter.setOnItemClickListener(object :MoviesMainAdapter.onItemClickListener{
                                         override fun onItemClick(position: Int) {
 
-                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
+//                                            Toast.makeText(applicationContext, "Clicked on ", Toast.LENGTH_SHORT).show()
                                             val intent = Intent(this@MainActivity,MoviePageActivity::class.java)
                                             intent.putExtra("position",position)
                                             intent.putExtra("MovieId",response.body()!!.results[position].id)

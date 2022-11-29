@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.example.mybookmyshow.R
 class UpcomingMovieAdapter(val moviesList: List<Result>): RecyclerView.Adapter<UpcomingMovieAdapter.UpcomingMoviesViewHolder>() {
 
     private lateinit var mListener:onItemClickListener
+
     interface onItemClickListener{
         fun onItemClick(position: Int)
     }
@@ -31,7 +33,13 @@ class UpcomingMovieAdapter(val moviesList: List<Result>): RecyclerView.Adapter<U
             movieReleaseDate.text = "Releasing on ${dataInput.release_date.toString()}"
 
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.poster_path.toString()}"
-            Glide.with(itemView.context).load(imagePath).dontAnimate().into(moviePoster)
+            if(dataInput.poster_path==null){
+                moviePoster.setImageResource(R.drawable.img)
+            }
+            else{
+                Glide.with(itemView.context).load(imagePath).dontAnimate().into(moviePoster)
+            }
+
         }
 
         init{

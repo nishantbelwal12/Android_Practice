@@ -34,7 +34,13 @@ class SimilarMoviesAdapter(val moviesList: List<Result>): RecyclerView.Adapter<S
             movieName.text = dataInput.original_title
             movieRating.text = dataInput.popularity.toString()
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.poster_path}"
-            Glide.with(itemView.context).load(imagePath).dontAnimate().into(movieTitle)
+            if(dataInput.poster_path==null){
+                movieTitle.setImageResource(R.drawable.img)
+            }
+            else{
+                Glide.with(itemView.context).load(imagePath).dontAnimate().into(movieTitle)
+            }
+
         }
 
         init {

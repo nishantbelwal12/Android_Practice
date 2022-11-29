@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,13 +26,21 @@ class MoviesMainAdapter(val moviesList: List<Result>): RecyclerView.Adapter<Movi
         val movieTitle: ImageView = itemView.findViewById(R.id.ivMoviePosterRecyclerMain)
         val movieName: TextView = itemView.findViewById(R.id.tvMovieNameRecyclerMain)
         val movieRating: TextView = itemView.findViewById(R.id.tvMovieLikesRecyclerMain)
+        val progressBar: ProgressBar = itemView.findViewById(R.id.progress_bar_movie_single)
 
         fun bind(dataInput: Result){
 
+
+            progressBar.setVisibility(View.VISIBLE)
             movieName.text = dataInput.original_title
             movieRating.text = dataInput.popularity.toString()
             val imagePath = "http://image.tmdb.org/t/p/w500${dataInput.poster_path}"
-            Glide.with(itemView.context).load(imagePath).dontAnimate().into(movieTitle)
+            if(dataInput.poster_path==null){
+                movieTitle.setImageResource(R.drawable.img)
+            }
+            else{
+                Glide.with(itemView.context).load(imagePath).dontAnimate().into(movieTitle)
+            }
 
         }
 
